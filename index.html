@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGE Day 2026</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 4px solid #667eea;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #667eea;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: #666;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 12px;
+        }
+
+        .group-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .group-selector label {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .group-selector select {
+            padding: 8px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .group-selector select:focus {
+            border-color: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .group-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .projects {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .project-item {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 18px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+
+        .project-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            background-color: #f5f5ff;
+        }
+
+        .project-item h3 {
+            color: #333;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .project-item .project-url {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 12px;
+            background-color: #eef1ff;
+            border-radius: 6px;
+            word-break: break-all;
+            transition: all 0.3s ease;
+        }
+
+        .project-item .project-url:hover {
+            color: #764ba2;
+            background-color: #e8e0f5;
+            text-decoration: underline;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-input-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .qr-input-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .qr-input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .qr-input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #qrcode {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin: 20px 0;
+            display: none;
+        }
+
+        #qrcode.active {
+            display: block;
+        }
+
+        .qr-url-display {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-radius: 6px;
+            word-break: break-all;
+            font-size: 13px;
+            color: #666;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .qr-url-display.active {
+            display: block;
+        }
+
+
+        footer {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚀 IGE Day 2026</h1>
+        <p>Innovation, Growth & Excellence Summit</p>
+    </header>
+
+    <div class="container">
+        <!-- GitHub Projects Section -->
+        <div class="section">
+            <h2>📚 Featured GitHub Projects</h2>
+
+            <div class="group-selector">
+                <label for="groupSelect">Select Group:</label>
+                <select id="groupSelect" onchange="updateProjectUrls()">
+                    <option value="1">Group 1</option>
+                    <option value="2">Group 2</option>
+                    <option value="3">Group 3</option>
+                    <option value="4">Group 4</option>
+                </select>
+                <span class="group-badge" id="groupBadge">Group 1</span>
+            </div>
+
+            <div class="projects">
+                <div class="project-item">
+                    <h3>🎉 Compliment Generator</h3>
+                    <a class="project-url" id="complimentUrl" href="https://avinode.com/Group1Compliment" target="_blank">https://avinode.com/Group1Compliment</a>
+                </div>
+                <div class="project-item">
+                    <h3>😊 Mood Picker</h3>
+                    <a class="project-url" id="moodUrl" href="https://avinode.com/Group1Mood" target="_blank">https://avinode.com/Group1Mood</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Code Generator Section -->
+        <div class="section">
+            <h2>📲 QR Code Generator</h2>
+            <div class="qr-section">
+                <div class="qr-input-group">
+                    <label for="qrInput">Enter URL to generate QR Code:</label>
+                    <input type="url" id="qrInput" placeholder="https://example.com" />
+                </div>
+                <div id="qrcode"></div>
+                <div class="qr-url-display" id="qrUrlDisplay"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>IGE Day 2026 | <a href="https://avinode.com" target="_blank">Avinode</a> | Made with ❤️ for innovation</p>
+    </footer>
+
+    <script>
+        // Group selector & project URL logic
+        function updateProjectUrls() {
+            const group = document.getElementById('groupSelect').value;
+            const badge = document.getElementById('groupBadge');
+            const complimentLink = document.getElementById('complimentUrl');
+            const moodLink = document.getElementById('moodUrl');
+
+            badge.textContent = 'Group ' + group;
+
+            const complimentUrl = 'https://avinode.com/Group' + group + 'Compliment';
+            const moodUrl = 'https://avinode.com/Group' + group + 'Mood';
+
+            complimentLink.href = complimentUrl;
+            complimentLink.textContent = complimentUrl;
+
+            moodLink.href = moodUrl;
+            moodLink.textContent = moodUrl;
+        }
+
+        function generateQRCode() {
+            const url = document.getElementById('qrInput').value.trim();
+            const qrcodeDiv = document.getElementById('qrcode');
+            const urlDisplay = document.getElementById('qrUrlDisplay');
+
+            // Clear previous QR code
+            qrcodeDiv.innerHTML = '';
+
+            if (!url) {
+                qrcodeDiv.classList.remove('active');
+                urlDisplay.classList.remove('active');
+                return;
+            }
+
+            // Validate URL format
+            try {
+                new URL(url);
+            } catch (e) {
+                qrcodeDiv.classList.remove('active');
+                urlDisplay.classList.remove('active');
+                return;
+            }
+
+            // Generate new QR code
+            new QRCode(qrcodeDiv, {
+                text: url,
+                width: 250,
+                height: 250,
+                colorDark: '#333333',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            qrcodeDiv.classList.add('active');
+            urlDisplay.textContent = url;
+            urlDisplay.classList.add('active');
+        }
+
+        // Live QR generation on input with debounce
+        let qrDebounceTimer;
+        document.getElementById('qrInput').addEventListener('input', function() {
+            clearTimeout(qrDebounceTimer);
+            qrDebounceTimer = setTimeout(generateQRCode, 300);
+        });
+    </script>
+</body>
+</html>
+
+
