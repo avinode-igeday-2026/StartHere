@@ -175,6 +175,43 @@
             text-decoration: underline;
         }
 
+        .clone-info {
+            background-color: #1e1e2e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .clone-info h3 {
+            color: #cdd6f4;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .clone-info code {
+            display: block;
+            background-color: #313244;
+            color: #a6e3a1;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+            margin-bottom: 8px;
+            word-break: break-all;
+            user-select: all;
+        }
+
+        .clone-info code:last-child {
+            margin-bottom: 0;
+        }
+
+        .clone-info p {
+            color: #9399b2;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
         .qr-section {
             display: flex;
             flex-direction: column;
@@ -295,6 +332,13 @@
                     <a class="project-url" id="moodUrl" href="#" target="_blank"></a>
                 </div>
             </div>
+
+            <div class="clone-info" id="cloneInfo">
+                <h3>📋 Clone Instructions</h3>
+                <code id="cloneCompliment"></code>
+                <code id="cloneMood"></code>
+                <p>Run these commands in your terminal to clone the repositories.</p>
+            </div>
         </div>
 
         <!-- QR Code Generator Section -->
@@ -337,6 +381,14 @@
 
             moodLink.href = moodUrl;
             moodLink.textContent = moodUrl;
+
+            // Update clone commands
+            const cloneInfo = document.getElementById('cloneInfo');
+            document.getElementById('cloneCompliment').textContent =
+                'git clone git@github.com:avinode-igeday-2026/Group' + group + 'AvinodeIGEDay2026Compliments.git';
+            document.getElementById('cloneMood').textContent =
+                'git clone git@github.com:avinode-igeday-2026/Group' + group + 'AvinodeIGEDay2026MoodPicker.git';
+            cloneInfo.style.display = 'block';
         }
 
         function generateQRCode() {
